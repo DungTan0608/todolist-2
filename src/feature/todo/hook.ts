@@ -49,36 +49,6 @@ export const useTodo = () => {
     },
   });
 
-  const { mutate: toggleTodoStatus, isPending: isTogglingStatus } = useMutation(
-    {
-      mutationFn: (id: number) => {
-        // Assuming your server supports PATCH requests for updating todo status
-        return fetch(`https://dummyjson.com/todos/${id}`, {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            complete: !state.items.find((item) => item.id === id)?.completed,
-          }),
-        }).then((res) => res.json());
-      },
-      onSettled: (data, error, id, context) => {
-        const currentData = client.getQueryData(["todos"]);
-        const updatedTodos = currentData.todos.map((item: { id: number }) => {
-          if (item.id === id) {
-            return { ...item, completed: !item.completed };
-          }
-          return item;
-        });
-
-        client.setQueryData(["todos"], {
-          ...currentData,
-          todos: updatedTodos,
-        });
-      },
-    }
-  );
   // completeall
 
   //deletec all compleate
@@ -104,7 +74,6 @@ export const useTodo = () => {
   };
 
   const toggleStatus = (id: number) => {
-    toggleTodoStatus(id);
     // dispatch({
     //   type: "toggle todo status",
     //   payload: { id },
