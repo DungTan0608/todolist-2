@@ -72,7 +72,6 @@ export const useTodo = () => {
     deleteTodo(id);
     // dispatch({ type: "delete todo", payload: { id } });
   };
-
   const toggleStatus = (id: number) => {
     // dispatch({
     //   type: "toggle todo status",
